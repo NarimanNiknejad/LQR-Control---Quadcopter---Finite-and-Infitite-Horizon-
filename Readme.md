@@ -1,4 +1,4 @@
-# Finite Time Horizon LQR Control for Quadrotor
+# Finite/Infinite Time Horizon LQR Control for Quadrotor
 
 This repository contains a Python implementation of a finite time horizon Linear Quadratic Regulator (LQR) control for a quadrotor. The controller aims to make the quadrotor follow given waypoints in a 3D space. The code simulates and compares the performance of both infinite time horizon and finite time horizon LQR controllers.
 
