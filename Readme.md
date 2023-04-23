@@ -1,97 +1,43 @@
-# Quadcopter Finite and Infinite Horizon LQR - 3D Control 
+# Finite Time Horizon LQR Control for Quadrotor
 
-This repository contains a Python script `lqr-quad.py` that implements a decentralized LQR controller for a quadrotor. The quadrotor's nonlinear dynamics are linearized into four subsystems and a decentralized LQR controller is designed for each subsystem. The performance of the controller is evaluated using numerical simulations.
+This repository contains a Python implementation of a finite time horizon Linear Quadratic Regulator (LQR) control for a quadrotor. The controller aims to make the quadrotor follow given waypoints in a 3D space. The code simulates and compares the performance of both infinite time horizon and finite time horizon LQR controllers.
 
-## Prerequisites
+## Dependencies
 
-Before running the code, make sure to install the following packages:
-* `numpy`
-* `scipy`
-* `matplotlib`
+To run the code, you will need the following libraries installed:
+
+- `numpy`
+- `scipy`
+- `matplotlib`
 
 ## Usage
 
-To run the script, simply run the command `python quadrotor.py` in the terminal. This will generate a 3D plot of the trajectory of the quadrotor.
+To run the simulation and visualize the results, simply execute the main script:
 
-## Description
-
-The script starts by importing the necessary packages:
-
-```python
-from time import time
-import nonlinearDynamics
-import argparse
-import numpy as np
-import scipy
-from scipy.integrate import odeint
-from scipy.integrate import solve_ivp
-from scipy.linalg import solve_continuous_are, inv, sqrtm
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from nonlinearDynamics import g, m, Ix, Iy, Iz
+```bash
+python LQR_QUAD.py
 ```
 
-It then defines the time instants for the simulation, the initial state, and the time horizon:
+The script will run the simulation for both infinite and finite time horizon LQR controllers and plot the errors in position tracking and the actual trajectories followed by the quadrotor.
 
-```python
-# time instants for simulation
-t_max = 10
-time_step = 0.01
-t = np.arange(0., t_max, time_step)
+## Overview
 
-# Inintial state
-X0 = np.zeros(12)
-tf = 2
-t_span = [0, tf]
-```
+The main script `LQR_QUAD.py` includes the following functions:
 
-The script then defines a function to solve the Riccati differential equation for a continuous finite time horizon using the terminal value approach:
+- `solve_riccati_continuous`: Solves the Riccati differential equation for a continuous finite time horizon using the terminal value approach.
+- `riccati_dynamics`: The dynamics of the Riccati differential equation.
+- `lqr`: Solves the continuous time LQR controller for infite time horizon.
 
-```python
-def solve_riccati_continuous(A, B, Q, R, T, P_T):
-    """
-    Solves the Riccati differential equation for a continuous finite time horizon using the terminal value approach.
 
-    Args:
-    A: ndarray, the system dynamics matrix
-    B: ndarray, the input matrix
-    Q: ndarray, the state cost matrix
-    R: ndarray, the input cost matrix
-    T: float, the final time
-    P_T: ndarray, the terminal value of the solution
+The script also includes the definition of the quadrotor system and the linearized subsystems for the x, y, z, and yaw dynamics.
 
-    Returns:
-    P: ndarray, the solution to the Riccati differential equation
-    """
-    def riccati_dynamics(t, P):
-        """
-        The dynamics of the Riccati differential equation.
+## Results
 
-        Args:
-        t: float, the time variable
-        P: ndarray, the solution to the Riccati differential equation at time t
+After running the simulation, the script will generate a plot with 4 subplots:
 
-        Returns:
-        Pdot: ndarray, the derivative of P with respect to time
-        """
-        P = P.reshape((len(A), len(A)))
-        Pdot = -A.T @ P - P @ A - Q + P @ B @ np.linalg.inv(R) @ B.T @ P
-        Pdot = Pdot.reshape(len(A)**2)
-        return Pdot
-    
-    t_span = (0, T)
-    P_T = P_T.reshape(len(A)**2)
-    sol = solve_ivp(riccati_dynamics, t_span, P_T)
-    P = sol.y[:,-1].reshape((len(A), len(A)))
-    return P
-```
+1. Position error for reference tracking.
+2. Comparison of x trajectories followed by the quadrotor with command and LQR control (both infinite and finite time horizons).
+3. Comparison of y trajectories followed by the quadrotor with command and LQR control (both infinite and finite time horizons).
+4. Comparison of z trajectories followed by the quadrotor with command and LQR control (both infinite and finite time horizons).
 
-Next, the script defines a function to solve the continuous time LQR controller:
-
-```python
-def lqr(A, B, Q, R):
-    """Solve the continuous time lqr controller.
-    dx/dt = A x + B u
-    cost = integral x.T*Q*x + u.T*R*u
-    """
-    # http://www.mwm.im/lqr-controllers-with
+The comparison of the trajectories will provide insight into the performance of the LQR controllers in tracking the desired waypoints.
