@@ -31,6 +31,32 @@ The main script `LQR_QUAD.py` includes the following functions:
 
 The script also includes the definition of the quadrotor system and the linearized subsystems for the x, y, z, and yaw dynamics.
 
+
+## Parameters
+
+The following parameters are defined in `djiphantom_params`:
+
+- `B`: Force constant (estimated) [F=b*w^2]
+- `D`: Torque constant (estimated) [T=d*w^2]
+- `M`: Mass of the drone [kg] (source: https://www.dji.com/phantom-4/info)
+- `L`: Arm length of the drone [m] (source: https://www.dji.com/phantom-4/info)
+- `Ix`: Moment of inertia along the x-axis (estimated) [kg*m^2]
+- `Iy`: Moment of inertia along the y-axis (estimated) [kg*m^2]
+- `Iz`: Moment of inertia along the z-axis (estimated) [kg*m^2]
+- `Jr`: Inertia of the propellers [kg*m^2] (estimated)
+- `maxrpm`: Maximum RPM of the motors
+
+## Usage
+
+To use the `djiphantom_params` in your project, simply import the dictionary into your Python script:
+
+```python
+from nonlinearDynamics import djiphantom_params
+
+# Access a specific parameter, e.g. the mass
+mass = djiphantom_params['M']
+```
+
 ## Results
 
 After running the simulation, the script will generate a plot with 4 subplots:
