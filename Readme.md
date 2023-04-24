@@ -66,4 +66,6 @@ After running the simulation, the script will generate a plot with 4 subplots:
 3. Comparison of y trajectories followed by the quadrotor with command and LQR control (both infinite and finite time horizons).
 4. Comparison of z trajectories followed by the quadrotor with command and LQR control (both infinite and finite time horizons).
 
+[Final Results](Results.png)
+
 The comparison of the trajectories will provide insight into the performance of the LQR controllers in tracking the desired waypoints.
