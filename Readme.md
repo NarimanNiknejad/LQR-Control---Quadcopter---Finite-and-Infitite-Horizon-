@@ -26,7 +26,7 @@ The main script `LQR_QUAD.py` includes the following functions:
 
 - `solve_riccati_continuous`: Solves the Riccati differential equation for a continuous finite time horizon using the terminal value approach.
 - `riccati_dynamics`: The dynamics of the Riccati differential equation.
-- `lqr`: Solves the continuous time LQR controller for infite time horizon.
+- `lqr`: Solves the continuous time LQR controller for infinite time horizon.
 
 
 The script also includes the definition of the quadrotor system and the linearized subsystems for the x, y, z, and yaw dynamics.
